@@ -5,6 +5,8 @@ platforms = ["linux-64"]
 version = "0.1.0"
 
 [tasks]
+mr = "marimo edit ProjetClip.py"
+export = "rm ProjetClip.ipynb && marimo export ipynb ProjetClip.py -o ProjetClip.ipynb"
 
 [dependencies]
 python = ">=3.10.0,<3.14"
@@ -13,3 +15,10 @@ jupyter = ">=1.1.1,<2"
 [pypi-dependencies]
 marimo = ">=0.17.8, <0.18"
 nbformat = ">=5.10.4, <6"
+pandas = ">=2.3.3, <3"
+numpy = ">=2.3.4, <3"
+matplotlib = ">=3.10.7, <4"
+seaborn = ">=0.13.2, <0.14"
+tensorflow = ">=2.20.0, <3"
+keras = ">=3.12.0, <4"
+scikit-learn = ">=1.7.2, <2"
