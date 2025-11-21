@@ -31,8 +31,12 @@ def _(mo):
 @app.cell
 def _():
     import os
+    from os import listdir
+    from os.path import isfile, join
     import pandas as pd
     import re
+
+    import cv2
     import numpy as np
     import random
     import zipfile
@@ -64,8 +68,12 @@ def _():
         AUTOTUNE,
         ImageDataGenerator,
         Path,
+        cv2,
         io,
+        isfile,
+        join,
         layers,
+        listdir,
         np,
         os,
         pd,
@@ -493,7 +501,7 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    mo.md(r"""
+    mo.md(rf"""
     **definition : get image form dir**
 
     Pour récupérer les images dans une variable pour la suite.
@@ -516,15 +524,48 @@ def _(ImageDataGenerator):
             shuffle=True,
             seed=seed
         )
-        return datagen
+        return data
     return (get_image_from_dir,)
 
 
 @app.cell
 def _(get_image_from_dir, image_dir):
-    g = get_image_from_dir(image_dir)
+    pictureGroup = get_image_from_dir(image_dir)
+    print(pictureGroup)
+    return
 
-    print(g.flow)
+
+@app.cell
+def _(cv2, image_dir, isfile, join, listdir, np, plt):
+    mypath = image_dir
+
+    files = []
+
+    for d in listdir(mypath):
+        if(d[0] != '.'):
+            for f in listdir(mypath+'/'+d):
+                if(isfile(mypath+'/'+d+'/'+f)):
+                    print(f)
+                    files.append(join(d, f))
+                
+    images = np.empty(len(files), dtype=object)
+    for n in range(0, len(files)):
+        images[n] = cv2.imread( join(mypath,files[n]) )
+
+
+    nb_columns = 25 # Nombre d'images à afficher
+
+    plt.figure(figsize=(15,15))
+    for i in range(nb_columns):
+        plt.subplot(5,5,i+1)
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        # cv2 lit met les images en BGR et matplotlib lit du RGB
+        # il faut donc convertir pour afficher les bonnes couleurs
+        images[i] = cv2.cvtColor(images[i], cv2.COLOR_BGR2RGB)
+        plt.imshow(images[i],cmap=plt.cm.binary)
+        plt.xlabel('taille ' + str(images[i].shape))
     return
 
 
