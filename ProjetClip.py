@@ -492,6 +492,17 @@ def _(mo):
 
 
 @app.cell
+def _(mo):
+    mo.md(r"""
+    **definition : get image form dir**
+
+    Pour récupérer les images dans une variable pour la suite.
+    A modifier les paramétres.
+    """)
+    return
+
+
+@app.cell
 def _(ImageDataGenerator):
     def get_image_from_dir(image_dir, image_size=(224, 224), n=12,
                                 subset="training", seed=123):
@@ -506,6 +517,14 @@ def _(ImageDataGenerator):
             seed=seed
         )
         return datagen
+    return (get_image_from_dir,)
+
+
+@app.cell
+def _(get_image_from_dir, image_dir):
+    g = get_image_from_dir(image_dir)
+
+    print(g.flow)
     return
 
 
