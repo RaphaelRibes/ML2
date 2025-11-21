@@ -492,7 +492,23 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(ImageDataGenerator, image_dir, image_size):
+    n = 64
+    subset = "training"
+    seed = "123"
+
+    datagen = ImageDataGenerator(validation_split=0.2, rescale=1./255)
+    data = datagen.flow_from_directory(
+        image_dir,
+        target_size=image_size,
+        batch_size=n,
+        class_mode="categorical",
+        subset=subset,
+        shuffle=True,
+        seed=seed
+    )
+
+
     return
 
 
